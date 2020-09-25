@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_weatherapp/blocs/weather/weather_bloc.dart';
@@ -10,6 +12,7 @@ import 'son_guncelleme.dart';
 
 class WeatherApp extends StatelessWidget {
   String kullanicininSectigiSehir = 'Ankara';
+  Completer<void> _refreshCompleter;
 
   @override
   Widget build(BuildContext context) {
@@ -50,35 +53,45 @@ class WeatherApp extends StatelessWidget {
               }
               else if (state is WeatherLoadedState) {
                 final getirilenWeather = state.weather;
-                return ListView(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: LocationWidget(
-                          secilenSehir: getirilenWeather.title,
+
+                _refreshCompleter?.complete();
+                _refreshCompleter = Completer();
+
+                return RefreshIndicator(
+                  onRefresh: (){
+                    _weatherBloc.add(RefreshWeatherEvent(sehirAdi: kullanicininSectigiSehir));
+                    return _refreshCompleter.future;
+                  },
+                  child: ListView(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: LocationWidget(
+                            secilenSehir: getirilenWeather.title,
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: SonGuncellemeWidget(),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: SonGuncellemeWidget(),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: HavaDurumuResimWidget(),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: HavaDurumuResimWidget(),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Center(
-                        child: MaxveMinSicaklikWidget(),
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Center(
+                          child: MaxveMinSicaklikWidget(),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               }
               else if (state is WeatherErrorState) {

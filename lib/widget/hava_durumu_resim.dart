@@ -17,7 +17,7 @@ class HavaDurumuResimWidget extends StatelessWidget {
                       .consolidatedWeather[0]
                       .theTemp
                       .floor()
-                      .toString(),
+                      .toString() + '°C',
                   style: TextStyle(fontSize: 30),
                 ),
                 Image.network(

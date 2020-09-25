@@ -14,11 +14,10 @@ class WeatherLoadingState extends WeatherState {
   List<Object> get props => [];
 }
 class WeatherLoadedState extends WeatherState {
-  @override
-  List<Object> get props => [];
-
   final Weather weather;
-  WeatherLoadedState({@required this.weather}):super([weather]);
+  @override
+  List<Object> get props => [weather];
+  WeatherLoadedState({@required this.weather}):assert(weather != null);
 }
 class WeatherErrorState extends WeatherState {
   @override
