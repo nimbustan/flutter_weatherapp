@@ -15,7 +15,6 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   WeatherBloc() : super(WeatherInitialState());
   final WeatherRepository weatherRepository = locator<WeatherRepository>();
 
-  @override
   WeatherState get initialState => WeatherInitialState();
 
   @override

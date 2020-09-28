@@ -5,6 +5,7 @@ import 'package:flutter_weatherapp/blocs/weather/weather_bloc.dart';
 class HavaDurumuResimWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // ignore: close_sinks
     final _weatherBloc = BlocProvider.of<WeatherBloc>(context);
 
     return BlocBuilder(
